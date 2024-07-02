@@ -1,0 +1,9 @@
+**/*.json
+**/*.mjs
+**/*.yml
+**/*.yaml
+**/*.js
+**/.git
+**/.svn
+**/.hg
+**/node_modules

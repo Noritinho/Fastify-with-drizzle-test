@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "@types/node": "^20.14.9",
+    "eslint": "^9.6.0",
+    "globals": "^15.7.0",
+    "prettier": "3.3.2",
+    "typescript": "^5.5.2"
+  },
+  "scripts": {
+    "dev": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "fastify": "^4.28.1",
+    "tsx": "^4.16.0"
+  }
+}
