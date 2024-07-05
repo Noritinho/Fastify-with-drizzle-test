@@ -1,10 +1,3 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { usersModel } from './models/users/users-model';
 
-export const users = pgTable('users', {
-    id: serial('id').primaryKey(),
-    username: text('username'),
-    email: text('email'),
-    password: text('password'),
-    createdAt: timestamp('created_at').defaultNow(),
-    updatedAt: timestamp('updated_at').$onUpdate(() => new Date()),
-});
+export const users = usersModel;
