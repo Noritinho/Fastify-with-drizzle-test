@@ -1,9 +1,10 @@
 import fastify from 'fastify';
+import { usersRoutes } from './modules/users/routes/users';
 
 const server = fastify();
 
-server.get('/ping', async (request, reply) => {
-    return 'pong\n';
+server.register(usersRoutes, {
+    prefix: 'users',
 });
 
 server.listen({ port: 3333 }, (err, address) => {
