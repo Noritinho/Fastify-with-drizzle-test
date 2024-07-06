@@ -1,13 +1,10 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
 import { FastifyInstance } from 'fastify';
 import { and, eq, sum } from 'drizzle-orm';
 
-import { postgresPool } from '../../../database/database.config';
 import * as schema from '../../../database/schema/schema';
 import { createAccountSchema } from '../dto/create-account.dto';
 import { updateAccountSchema } from '../dto/update-account.dto';
-
-const db = drizzle(postgresPool, { schema });
+import { db } from '../../../database/database.config';
 
 export async function accountsRoutes(app: FastifyInstance) {
   app.get('/', async () => {

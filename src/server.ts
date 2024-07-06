@@ -1,4 +1,5 @@
 import fastify from 'fastify';
+
 import { usersRoutes } from './modules/users/routes/users';
 import { accountsRoutes } from './modules/accounts/routes/accounts';
 
