@@ -1,49 +1,28 @@
 import { FastifyInstance } from 'fastify';
 
-import { createAccountSchema } from '../dto/create-account.dto';
-import { updateAccountSchema } from '../dto/update-account.dto';
 import { AccountsService } from '../services/accounts.service';
+import { AccountsController } from '../controllers/accounts.controller';
 
 export async function accountsRoutes(app: FastifyInstance) {
-  app.get('/', async () => {
-    return AccountsService.prototype.findAllAccounts();
-  });
+  const accountsController = new AccountsController(new AccountsService());
 
-  app.get<{ Params: { id: number } }>('/:id', async (request) => {
-    const { id } = request.params;
+  app.get('/', accountsController.findAllAccounts.bind(accountsController));
+  app.get('/:id', accountsController.findOneAccount.bind(accountsController));
+  app.get(
+    '/users/:id',
+    accountsController.findUserAccounts.bind(accountsController)
+  );
+  app.get(
+    '/users/:id/total',
+    accountsController.findUserTotalAccountValue.bind(accountsController)
+  );
 
-    return AccountsService.prototype.findOneAccount(id);
-  });
+  app.post(
+    '/users/:id',
+    accountsController.createAccount.bind(accountsController)
+  );
 
-  app.get<{ Params: { id: number } }>('/users/:id', async (request) => {
-    const { id } = request.params;
+  app.put('/:id', accountsController.updateAccount.bind(accountsController));
 
-    return AccountsService.prototype.findUserAccounts(id);
-  });
-
-  app.get<{ Params: { id: number } }>('/users/:id/total', async (request) => {
-    const { id } = request.params;
-
-    return AccountsService.prototype.findUserTotalAccountValue(id);
-  });
-
-  app.post<{ Params: { id: number } }>('/users/:id', async (request) => {
-    const { id } = request.params;
-    const account = createAccountSchema.parse(request.body);
-
-    return AccountsService.prototype.createAccount(id, account);
-  });
-
-  app.put<{ Params: { id: number } }>('/id', async (request) => {
-    const { id } = request.params;
-    const account = updateAccountSchema.parse(request);
-
-    return AccountsService.prototype.updateAccount(id, account);
-  });
-
-  app.delete<{ Params: { id: number } }>('/:id', async (request) => {
-    const { id } = request.params;
-
-    return AccountsService.prototype.deleteAccount(id);
-  });
+  app.delete('/:id', accountsController.deleteAccount.bind(accountsController));
 }
