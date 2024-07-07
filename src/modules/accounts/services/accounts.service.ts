@@ -1,7 +1,7 @@
 import { and, eq, sum } from 'drizzle-orm';
 
 import { db } from '../../../database/database.config';
-import { accounts } from '../models/accounts-model';
+import { accounts } from '../../../database/schema/schema';
 import { CreateAccountDto } from '../dto/create-account.dto';
 import { UpdateAccountDto } from '../dto/update-account.dto';
 

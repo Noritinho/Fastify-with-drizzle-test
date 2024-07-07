@@ -1,44 +1,18 @@
 import { FastifyInstance } from 'fastify';
-import { eq } from 'drizzle-orm';
 
-import * as schema from '../../../database/schema/schema';
-import { createUserSchema } from '../dto/create-user.dto';
-import { updateUserSchema } from '../dto/update-user.dto';
-import { db } from '../../../database/database.config';
+import { usersController } from '../controllers/users.controller';
 
 export async function usersRoutes(app: FastifyInstance) {
-  app.get('/', async () => {
-    const users = await db.query.users.findMany();
-    return users;
-  });
+  const { findAllUsers, findOneUser, createUser, updateUser, deleteUser } =
+    usersController;
 
-  app.get<{ Params: { id: number } }>('/:id', async (request) => {
-    const { id } = request.params;
+  app.get('/', findAllUsers);
 
-    const users = await db.query.users.findMany({
-      where: eq(schema.users.id, id),
-    });
-    return users;
-  });
+  app.get('/:id', findOneUser);
 
-  app.post('/', async (request) => {
-    const { username, email, password } = createUserSchema.parse(
-      await request.body
-    );
-    await db
-      .insert(schema.users)
-      .values({ username: username, email: email, password: password });
-  });
+  app.post('/', createUser);
 
-  app.put<{ Params: { id: number } }>('/:id', async (request) => {
-    const { id } = request.params;
-    const user = updateUserSchema.parse(await request.body);
-    await db.update(schema.users).set(user).where(eq(schema.users.id, id));
-  });
+  app.put('/:id', updateUser);
 
-  app.delete<{ Params: { id: number } }>('/:id', async (request) => {
-    const { id } = request.params;
-
-    await db.delete(schema.users).where(eq(schema.users.id, id));
-  });
+  app.delete('/:id', deleteUser);
 }
